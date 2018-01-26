@@ -12,9 +12,9 @@ defmodule HelloNetwork.Mixfile do
   def project do
     [app: :hello_network,
      version: "0.3.0",
-     elixir: "~> 1.4",
+     elixir: "~> 1.5",
      target: @target,
-     archives: [nerves_bootstrap: "~> 0.6"],
+     archives: [nerves_bootstrap: "~> 0.7"],
      deps_path: "deps/#{@target}",
      build_path: "_build/#{@target}",
      lockfile: "mix.lock.#{@target}",
@@ -51,7 +51,7 @@ defmodule HelloNetwork.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   def deps do
-    [{:nerves, "~> 0.7", runtime: false}] ++
+    [{:nerves, "~> 0.9", runtime: false}] ++
     deps(@target)
   end
 
@@ -59,9 +59,9 @@ defmodule HelloNetwork.Mixfile do
   def deps("host"), do: []
   def deps(target) do
     [ system(target),
-      {:bootloader, "~> 0.1"},
-      {:nerves_runtime, "~> 0.4"},
-      {:nerves_network, "~> 0.3"},
+      {:nerves_runtime, "~> 0.4.4"},
+      {:nerves_network, "~> 0.3.4"},
+      {:shoehorn, "~> 0.2"}
     ]
   end
 
@@ -79,8 +79,9 @@ defmodule HelloNetwork.Mixfile do
   # We do not invoke the Nerves Env when running on the Host
   def aliases("host"), do: []
   def aliases(_target) do
-    ["deps.precompile": ["nerves.precompile", "deps.precompile"],
-     "deps.loadpaths":  ["deps.loadpaths", "nerves.loadpaths"]]
+    [
+      # Add custom mix aliases here
+    ]
+    |> Nerves.Bootstrap.add_aliases()
   end
-
 end
